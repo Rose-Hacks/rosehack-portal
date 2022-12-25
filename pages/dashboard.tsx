@@ -30,7 +30,6 @@ const dashboard = () => {
 
   useEffect(() => {
     console.log(userData);
-    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     onAuthStateChanged(auth, async (currentState) => {
       if (currentState === null) router.push("/");
       else if (currentState !== null) {
