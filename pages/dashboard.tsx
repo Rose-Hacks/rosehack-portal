@@ -207,7 +207,7 @@ const Dashboard = () => {
       <p className="text-white font-lexend mt-16 p-0 text-3xl sm:text-5xl w-full text-center">
         {new Date().getHours() < 12 && new Date().getHours() > 5
           ? "Good Morning"
-          : new Date().getHours() < 16 && new Date().getHours() > 12
+          : new Date().getHours() < 16 && new Date().getHours() >= 12
           ? "Good Afternoon"
           : new Date().getHours() < 20 && new Date().getHours() > 16
           ? "Good Evening"
@@ -215,7 +215,7 @@ const Dashboard = () => {
         {userData.first} {userData.last}!
       </p>
 
-      <Row className="flex justify-evenly items-stretch w-11/12">
+      <Row className="flex justify-evenly items-stretch w-11/12 mt-4">
         <Col
           md={4}
           className="bg-white rounded-2xl flex flex-col items-center justify-start m-2"
