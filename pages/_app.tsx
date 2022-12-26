@@ -1,6 +1,7 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import React from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
 // eslint-disable-next-line camelcase
 import { Lexend, Press_Start_2P } from "@next/font/google";
 
