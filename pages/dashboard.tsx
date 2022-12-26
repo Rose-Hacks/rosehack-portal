@@ -14,7 +14,7 @@ interface team_type {
   name: string;
 }
 
-const dashboard = () => {
+const Dashboard = () => {
   const router = useRouter();
   const [user] = useAuthState(auth);
   const [userData, setUserData] = useState<typeof data>(data);
@@ -475,4 +475,4 @@ const dashboard = () => {
   );
 };
 
-export default dashboard;
+export default Dashboard;

@@ -21,8 +21,8 @@ module.exports = {
         black: "0 0px 9px rgba(0,0,0, .6)",
       },
       fontFamily: {
-        lexend: ["Lexend"],
-        pixel: ["'Press Start 2P'", "cursive"],
+        lexend: ["var(--font-lexend)"],
+        pixel: ["var(--font-pixel)", "cursive"],
       },
       colors: {
         header: {
