@@ -47,6 +47,7 @@ const Dashboard = () => {
       }
     });
   }, []);
+
   const snackBar = () => {
     setShowSnackBar(true);
     setTimeout(() => {
