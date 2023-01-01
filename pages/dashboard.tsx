@@ -250,6 +250,24 @@ const Dashboard = () => {
                 )}
               </div>
             </div>
+            <div className="flex items-center justify-center">
+              <p className="p-0 m-0 inline font-bold text-base sm:text-lg">
+                RSVP:
+              </p>
+              <div className="flex items-center ml-1 text-base sm:text-lg">
+                {userData.rsvp === "yes" ? (
+                  <>
+                    Confirmed
+                    <FaCheck className="text-green-500 text-xl ml-2" />
+                  </>
+                ) : (
+                  <>
+                    Not Attending
+                    <FaTimes className="text-red-500 text-xl ml-2" />
+                  </>
+                )}
+              </div>
+            </div>
 
             <div className="text-base sm:text-lg">
               <p className="p-0 m-0 inline font-bold ">Email:</p> {user?.email}
