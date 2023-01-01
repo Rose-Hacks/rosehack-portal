@@ -5,7 +5,8 @@ import { auth } from "../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import axios from "axios";
 import { data } from "../components/data/register";
-import { Row, Col } from "react-bootstrap";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 import { v4 as uuidv4 } from "uuid";
 import { FaRegCopy, FaCheck, FaTimes, FaRegClock } from "react-icons/fa";
 
