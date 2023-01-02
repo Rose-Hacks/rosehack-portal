@@ -62,4 +62,5 @@ export const data = {
   covid: false,
   status: "pending",
   team: "",
+  rsvp: "no",
 };

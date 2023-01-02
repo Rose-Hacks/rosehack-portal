@@ -5,7 +5,8 @@ import { auth } from "../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import axios from "axios";
 import { data } from "../components/data/register";
-import { Row, Col } from "react-bootstrap";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 import { v4 as uuidv4 } from "uuid";
 import { FaRegCopy, FaCheck, FaTimes, FaRegClock } from "react-icons/fa";
 
@@ -245,6 +246,24 @@ const Dashboard = () => {
                 ) : (
                   <>
                     Rejected
+                    <FaTimes className="text-red-500 text-xl ml-2" />
+                  </>
+                )}
+              </div>
+            </div>
+            <div className="flex items-center justify-center">
+              <p className="p-0 m-0 inline font-bold text-base sm:text-lg">
+                RSVP:
+              </p>
+              <div className="flex items-center ml-1 text-base sm:text-lg">
+                {userData.rsvp === "yes" ? (
+                  <>
+                    Confirmed
+                    <FaCheck className="text-green-500 text-xl ml-2" />
+                  </>
+                ) : (
+                  <>
+                    Not Attending
                     <FaTimes className="text-red-500 text-xl ml-2" />
                   </>
                 )}
