@@ -9,20 +9,19 @@ export default async function addStudent(
   try {
     const snapshot = await getDoc(doc(db, "users", req.body.email));
     res.status(200).json(snapshot.data());
-    
+
     return;
   } catch {
     // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
-    const email = req.body.email.charAt(0).toUpperCase() + req.body.email.slice(1);
+    const email =
+      req.body.email.charAt(0).toUpperCase() + req.body.email.slice(1);
     try {
       const snapshot = await getDoc(doc(db, "users", email));
       res.status(200).json(snapshot.data());
       res.end();
-    }
-    catch {
+    } catch {
       res.status(500).json({});
       res.end();
     }
-    
   }
 }
