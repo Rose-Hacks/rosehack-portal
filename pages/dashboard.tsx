@@ -218,10 +218,12 @@ const Dashboard = () => {
 
   const handleInput = (data: string, value: string) => {
     setInfo({ ...info, [data]: value });
+    console.log(data, value);
   };
 
   const handleSchool = (school: string) => {
     setInfo({ ...info, school });
+    console.log(school);
   };
 
   return (
@@ -268,25 +270,8 @@ const Dashboard = () => {
 
           <div className="bg-gradient-to-r from-purple-400 to-pink-600 h-1 w-10/12" />
           <div className="font-lexend flex flex-col justify-evenly items-start p-4">
-            <div className="text-base sm:text-lg flex whitespace-nowrap">
-              <p className="p-0 m-0 inline font-bold">First Name:</p>{" "}
-              <input
-                name="first"
-                value={info.first}
-                placeholder={userData.first}
-                disabled={operation !== "edit"}
-                onChange={handleTyping}
-              />
-            </div>
-            <div className="text-base sm:text-lg flex whitespace-nowrap">
-              <p className="p-0 m-0 inline font-bold">Last Name:</p>{" "}
-              <input
-                name="first"
-                value={info.last}
-                placeholder={userData.last}
-                disabled={operation !== "edit"}
-                onChange={handleTyping}
-              />
+            <div className="text-base sm:text-lg">
+              <p className="p-0 m-0 inline font-bold ">Email:</p> {user?.email}
             </div>
             <div className="flex items-center justify-center">
               <p className="p-0 m-0 inline font-bold text-base sm:text-lg">
@@ -339,11 +324,26 @@ const Dashboard = () => {
                 )}
               </div>
             </div>
-
-            <div className="text-base sm:text-lg">
-              <p className="p-0 m-0 inline font-bold ">Email:</p> {user?.email}
+            <div className="text-base sm:text-lg flex whitespace-nowrap">
+              <p className="p-0 m-0 inline font-bold">First Name:</p>{" "}
+              <input
+                name="first"
+                value={info.first}
+                placeholder={userData.first}
+                disabled={operation !== "edit"}
+                onChange={handleTyping}
+              />
             </div>
-
+            <div className="text-base sm:text-lg flex whitespace-nowrap">
+              <p className="p-0 m-0 inline font-bold">Last Name:</p>{" "}
+              <input
+                name="first"
+                value={info.last}
+                placeholder={userData.last}
+                disabled={operation !== "edit"}
+                onChange={handleTyping}
+              />
+            </div>
             <div className="text-base sm:text-lg">
               <p className="p-0 m-0 inline font-bold">Phone:</p>{" "}
               <input
@@ -363,7 +363,7 @@ const Dashboard = () => {
                 <div className="w-full">
                   <Selector
                     options={grades}
-                    user={userData}
+                    user={info}
                     field="grade"
                     handleInput={handleInput}
                   />
@@ -377,7 +377,7 @@ const Dashboard = () => {
                 <div className="w-full">
                   <Schools
                     schools={schools}
-                    school={userData.school}
+                    school={info.school}
                     handleSchool={handleSchool}
                   />
                 </div>
@@ -393,7 +393,7 @@ const Dashboard = () => {
                 <div className="w-full">
                   <Selector
                     options={genders}
-                    user={userData}
+                    user={info}
                     field="gender"
                     handleInput={handleInput}
                   />
@@ -409,7 +409,7 @@ const Dashboard = () => {
                 <div className="w-full">
                   <Selector
                     options={ages}
-                    user={userData}
+                    user={info}
                     field="age"
                     handleInput={handleInput}
                   />
@@ -425,7 +425,7 @@ const Dashboard = () => {
                 <div className="w-full">
                   <Selector
                     options={majors}
-                    user={userData}
+                    user={info}
                     field="major"
                     handleInput={handleInput}
                   />
@@ -441,13 +441,15 @@ const Dashboard = () => {
                 <div className="w-full">
                   <Selector
                     options={shirts}
-                    user={userData}
+                    user={info}
                     field="shirt"
                     handleInput={handleInput}
                   />
                 </div>
               )}
             </div>
+            {/* NOT ADDING YET TOO LAZY LOLOL */}
+            {/* START LAZINESS */}
             {/* <div className="text-base sm:text-lg">
               <p className="p-0 m-0 inline font-bold">In Person:</p>{" "}
               {userData.in_person ? "yes" : "no"}
@@ -456,12 +458,12 @@ const Dashboard = () => {
               <p className="p-0 m-0 inline font-bold">Vaccinated:</p>{" "}
               {userData.covid ? "yes" : "no"}
             </div> */}
-            <div className="text-base sm:text-lg">
+            {/* <div className="text-base sm:text-lg">
               <p className="p-0 m-0 inline font-bold">Dietary Restrictions:</p>{" "}
-              {userData.hindu ? "Hindu," : ""}
-              {userData.kosher ? " Kosher," : ""}
-              {userData.vegan ? " Vegan," : ""}
-              {userData.vegetarian ? " Vegetarian" : ""}
+              {userData.hindu ? "Hindu |" : ""}
+              {userData.kosher ? " Kosher |" : ""}
+              {userData.vegan ? " Vegan |" : ""}
+              {userData.vegetarian ? " Vegetarian |" : ""}
               {!(
                 userData.hindu ||
                 userData.kosher ||
@@ -470,7 +472,8 @@ const Dashboard = () => {
               )
                 ? "none"
                 : ""}
-            </div>
+            </div> */}
+            {/* END LAZINESS */}
             {operation === "view" && (
               <div className="flex justify-end items-center w-full">
                 <button
