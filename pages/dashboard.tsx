@@ -4,11 +4,21 @@ import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import axios from "axios";
-import { data } from "../components/data/register";
+import {
+  data,
+  grades,
+  shirts,
+  ages,
+  majors,
+  genders,
+} from "../components/data/register";
+import { schools } from "../components/data/schools";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { v4 as uuidv4 } from "uuid";
 import { FaRegCopy, FaCheck, FaTimes, FaRegClock } from "react-icons/fa";
+import Selector from "../components/Selector";
+import Schools from "../components/Schools";
 
 interface team_type {
   members: string[];
@@ -206,6 +216,14 @@ const Dashboard = () => {
     setInfo({ ...info, [e.target.name]: e.target.value });
   };
 
+  const handleInput = (data: string, value: string) => {
+    setInfo({ ...info, [data]: value });
+  };
+
+  const handleSchool = (school: string) => {
+    setInfo({ ...info, school });
+  };
+
   return (
     <div className="w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-400 flex flex-col justify-evenly items-center min-h-[90vh]">
       <a
@@ -336,33 +354,108 @@ const Dashboard = () => {
                 onChange={handleTyping}
               />
             </div>
-            <div className="text-base sm:text-lg">
+            <div className="text-base sm:text-lg flex w-full">
               <p className="p-0 m-0 inline font-bold">Grade:</p>{" "}
-              {userData.grade}
+              {operation === "view" && (
+                <span className="text-gray-500">{userData.grade}</span>
+              )}
+              {operation === "edit" && (
+                <div className="w-full">
+                  <Selector
+                    options={grades}
+                    user={userData}
+                    field="grade"
+                    handleInput={handleInput}
+                  />
+                </div>
+              )}
             </div>
-            <div className="text-base sm:text-lg">
+            <div className="text-base sm:text-lg flex w-full">
               <p className="p-0 m-0 inline font-bold">School:</p>{" "}
-              {userData.school}
+              {operation === "view" && userData.school}
+              {operation === "edit" && (
+                <div className="w-full">
+                  <Schools
+                    schools={schools}
+                    school={userData.school}
+                    handleSchool={handleSchool}
+                  />
+                </div>
+              )}
             </div>
-            <div className="text-base sm:text-lg">
+
+            <div className="text-base sm:text-lg flex w-full">
               <p className="p-0 m-0 inline font-bold">Gender:</p>{" "}
-              {userData.gender}
+              {operation === "view" && (
+                <span className="text-gray-500">{userData.gender}</span>
+              )}
+              {operation === "edit" && (
+                <div className="w-full">
+                  <Selector
+                    options={genders}
+                    user={userData}
+                    field="gender"
+                    handleInput={handleInput}
+                  />
+                </div>
+              )}
             </div>
-            <div className="text-base sm:text-lg">
-              <p className="p-0 m-0 inline font-bold">Age:</p> {userData.age}
+            <div className="text-base sm:text-lg flex w-full">
+              <p className="p-0 m-0 inline font-bold">Age:</p>{" "}
+              {operation === "view" && (
+                <span className="text-gray-500">{userData.age}</span>
+              )}
+              {operation === "edit" && (
+                <div className="w-full">
+                  <Selector
+                    options={ages}
+                    user={userData}
+                    field="age"
+                    handleInput={handleInput}
+                  />
+                </div>
+              )}
             </div>
-            <div className="text-base sm:text-lg">
+            <div className="text-base sm:text-lg flex w-full">
               <p className="p-0 m-0 inline font-bold">Major:</p>{" "}
-              {userData.major}
+              {operation === "view" && (
+                <span className="text-gray-500">{userData.major}</span>
+              )}
+              {operation === "edit" && (
+                <div className="w-full">
+                  <Selector
+                    options={majors}
+                    user={userData}
+                    field="major"
+                    handleInput={handleInput}
+                  />
+                </div>
+              )}
             </div>
-            <div className="text-base sm:text-lg">
+            <div className="text-base sm:text-lg flex w-full">
+              <p className="p-0 m-0 inline font-bold">Shirts:</p>{" "}
+              {operation === "view" && (
+                <span className="text-gray-500">{userData.shirt}</span>
+              )}
+              {operation === "edit" && (
+                <div className="w-full">
+                  <Selector
+                    options={shirts}
+                    user={userData}
+                    field="shirt"
+                    handleInput={handleInput}
+                  />
+                </div>
+              )}
+            </div>
+            {/* <div className="text-base sm:text-lg">
               <p className="p-0 m-0 inline font-bold">In Person:</p>{" "}
               {userData.in_person ? "yes" : "no"}
             </div>
             <div className="text-base sm:text-lg">
               <p className="p-0 m-0 inline font-bold">Vaccinated:</p>{" "}
               {userData.covid ? "yes" : "no"}
-            </div>
+            </div> */}
             <div className="text-base sm:text-lg">
               <p className="p-0 m-0 inline font-bold">Dietary Restrictions:</p>{" "}
               {userData.hindu ? "Hindu," : ""}
