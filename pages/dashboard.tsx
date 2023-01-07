@@ -28,6 +28,8 @@ const Dashboard = () => {
   const [inTeam, setInTeam] = useState(false);
   const [showSnackBar, setShowSnackBar] = useState(false);
   const [message, setMessage] = useState("");
+  const [operation, setOperation] = useState("view");
+  const [info, setInfo] = useState(data);
 
   useEffect(() => {
     console.log(userData);
@@ -75,7 +77,7 @@ const Dashboard = () => {
       return;
     }
 
-    const response = await axios.post("/api/verifyTeam", { id: id });
+    const response = await axios.post("/api/verifyTeam", { id });
 
     if (response.status === 201) {
       setMessage("Invalid Team ID, please try again!");
@@ -125,7 +127,7 @@ const Dashboard = () => {
     const uuid = uuidv4();
     await axios.post("/api/newTeam", {
       email: userData.email,
-      uuid: uuid,
+      uuid,
       name: userData.first + " " + userData.last,
     });
 
@@ -181,9 +183,29 @@ const Dashboard = () => {
   };
 
   const handleLogOut = async () => {
-    const response = await logOut();
-    console.log(response);
+    await logOut();
   };
+
+  const handleEdit = () => {
+    setInfo(userData);
+    setOperation("edit");
+  };
+
+  const handleSave = () => {
+    setOperation("view");
+    console.log(info);
+    axios.post("/api/updateInfo", info);
+    setUserData(info);
+  };
+
+  const handleCancel = () => {
+    setOperation("view");
+  };
+
+  const handleTyping = (e: any) => {
+    setInfo({ ...info, [e.target.name]: e.target.value });
+  };
+
   return (
     <div className="w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-400 flex flex-col justify-evenly items-center min-h-[90vh]">
       <a
@@ -222,12 +244,32 @@ const Dashboard = () => {
           md={4}
           className="bg-white rounded-2xl flex flex-col items-center justify-start m-2"
         >
-          <div className="h-8 text-center w-10/12 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600 font-lexend text-base md:text-xl lg:text-2xl mt-4">
-            INFORMATION
+          <div className="h-8 w-10/12 text-center text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600 font-lexend text-base md:text-xl lg:text-2xl mt-4">
+            <p>INFORMATION</p>
           </div>
 
           <div className="bg-gradient-to-r from-purple-400 to-pink-600 h-1 w-10/12" />
           <div className="font-lexend flex flex-col justify-evenly items-start p-4">
+            <div className="text-base sm:text-lg flex whitespace-nowrap">
+              <p className="p-0 m-0 inline font-bold">First Name:</p>{" "}
+              <input
+                name="first"
+                value={info.first}
+                placeholder={userData.first}
+                disabled={operation !== "edit"}
+                onChange={handleTyping}
+              />
+            </div>
+            <div className="text-base sm:text-lg flex whitespace-nowrap">
+              <p className="p-0 m-0 inline font-bold">Last Name:</p>{" "}
+              <input
+                name="first"
+                value={info.last}
+                placeholder={userData.last}
+                disabled={operation !== "edit"}
+                onChange={handleTyping}
+              />
+            </div>
             <div className="flex items-center justify-center">
               <p className="p-0 m-0 inline font-bold text-base sm:text-lg">
                 Status:
@@ -283,9 +325,16 @@ const Dashboard = () => {
             <div className="text-base sm:text-lg">
               <p className="p-0 m-0 inline font-bold ">Email:</p> {user?.email}
             </div>
+
             <div className="text-base sm:text-lg">
               <p className="p-0 m-0 inline font-bold">Phone:</p>{" "}
-              {userData.phone}
+              <input
+                name="phone"
+                value={info.phone}
+                placeholder={userData.phone}
+                disabled={operation !== "edit"}
+                onChange={handleTyping}
+              />
             </div>
             <div className="text-base sm:text-lg">
               <p className="p-0 m-0 inline font-bold">Grade:</p>{" "}
@@ -329,6 +378,32 @@ const Dashboard = () => {
                 ? "none"
                 : ""}
             </div>
+            {operation === "view" && (
+              <div className="flex justify-end items-center w-full">
+                <button
+                  className="rounded-full bg-gray-500 px-4 py-2  hover:text-white"
+                  onClick={handleEdit}
+                >
+                  Edit
+                </button>
+              </div>
+            )}
+            {operation === "edit" && (
+              <div className="flex justify-between items-center w-full">
+                <button
+                  className="rounded-full bg-gray-500 px-4 py-2  hover:text-white"
+                  onClick={handleCancel}
+                >
+                  Cancel
+                </button>
+                <button
+                  className="rounded-full bg-gray-500 px-4 py-2  hover:text-white"
+                  onClick={handleSave}
+                >
+                  Save
+                </button>
+              </div>
+            )}
           </div>
         </Col>
         <Col
