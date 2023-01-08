@@ -10,6 +10,7 @@ const RSVP = () => {
     email: "",
   });
   const [visible, setVisible] = useState(false);
+  const [approved, setApproved] = useState(false);
 
   useEffect(() => {
     onAuthStateChanged(auth, async (currentState) => {
@@ -20,6 +21,10 @@ const RSVP = () => {
         });
         if (response.status === 200) {
           setUser(response.data.email);
+          const result = await axios.post("/api/getStatus", {
+            email: response.data.email,
+          });
+          setApproved(result.data === "approved");
         }
       }
     });
@@ -47,34 +52,48 @@ const RSVP = () => {
         </div>
         <div className="w-10/12 flex justify-start items-center flex-col">
           <p className="text-4xl font-lexend">RSVP CHECK IN FORM</p>
-          <p className="font-lexend text-xl text-center">
-            With Rosehack right around the corner, the Rosehack operations team
-            would like to guage the number of participants who will be attending
-            Rosehack in person at the University of California, Riverside.
-            Unfortunately, there will be no virtual or hybrid option for this
-            hackathon. If you are able to attend the event in person, please
-            RSVP &quot;YES&quot; or &quot;NO&quot; if you are unable to attend
-            the event. If you have additional questions, do not hestitate to ask
-            us at rosehackucr@gmail.com
-          </p>
-          <p className="font-lexend text-2xl text-center">
-            Will you be attending Rosehack 2023 in person from January 14 - 15th
-            at University of California, Riverside?
-          </p>
-          <div className="flex">
-            <button
-              className="font-lexend text-3xl px-4 py-2 bg-green-500 mx-4 rounded hover:scale-110"
-              onClick={() => handleButton("yes")}
-            >
-              Yes
-            </button>
-            <button
-              className="font-lexend text-3xl px-4 py-2 bg-red-500 mx-4 rounded hover:scale-110"
-              onClick={() => handleButton("no")}
-            >
-              No
-            </button>
-          </div>
+          {approved && (
+            <>
+              <p className="font-lexend text-xl text-center">
+                With Rosehack right around the corner, the Rosehack operations
+                team would like to guage the number of participants who will be
+                attending Rosehack in person at the University of California,
+                Riverside. Unfortunately, there will be no virtual or hybrid
+                option for this hackathon. If you are able to attend the event
+                in person, please RSVP &quot;YES&quot; or &quot;NO&quot; if you
+                are unable to attend the event. If you have additional
+                questions, do not hestitate to ask us at rosehackucr@gmail.com
+              </p>
+              <p className="font-lexend text-2xl text-center">
+                Will you be attending Rosehack 2023 in person from January 14 -
+                15th at University of California, Riverside?
+              </p>
+              <div className="flex">
+                <button
+                  className="font-lexend text-3xl px-4 py-2 bg-green-500 mx-4 rounded hover:scale-110"
+                  onClick={() => handleButton("yes")}
+                >
+                  Yes
+                </button>
+                <button
+                  className="font-lexend text-3xl px-4 py-2 bg-red-500 mx-4 rounded hover:scale-110"
+                  onClick={() => handleButton("no")}
+                >
+                  No
+                </button>
+              </div>
+            </>
+          )}
+
+          {!approved && (
+            <p className="font-lexend text-xl text-center">
+              Unfortunately, your application has not been accepted yet. Please
+              check your portal for your application status. Once you have been
+              approved, you will be able to RSVP for Rosehack! If you have
+              additional questions, do not hestitate to ask us at
+              rosehackucr@gmail.com.
+            </p>
+          )}
         </div>
       </div>
     );
