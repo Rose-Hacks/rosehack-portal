@@ -11,16 +11,15 @@ interface props {
 
 const Selector = ({ options, user, field, handleInput }: props) => {
   return (
-    <Dropdown className="w-full">
+    <Dropdown className="!font-lexend !flex justify-center items-center text-black bg-transparent !border-2 border-solid border-black !rounded-full px-2 grow-0 !w-full">
       <Dropdown.Toggle
         variant=""
         id=""
-        className="!font-lexend !flex justify-center items-center text-black after:!hidden w-full bg-transparent !border-4 border-solid border-black !rounded-xl"
+        className="!w-full after:!hidden overflow-hidden text-left !font-lexend !flex justify-start items-center text-black bg-transparent !border-0 focus:border-0 p-0 text-base"
       >
-        {user[field]}
-        <FaChevronDown className="mx-2" />
+        <p className="p-0 m-0">{user[field]}</p>
+        <FaChevronDown className="pl-2" />
       </Dropdown.Toggle>
-
       <Dropdown.Menu className="w-full font-lexend active:bg-white">
         {options.map((option, index) => (
           <Dropdown.Item
