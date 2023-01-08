@@ -243,9 +243,14 @@ const Dashboard = () => {
                     Approved
                     <FaCheck className="text-green-500 text-xl ml-2" />
                   </>
-                ) : (
+                ) : userData.status === "rejected" ? (
                   <>
                     Rejected
+                    <FaTimes className="text-red-500 text-xl ml-2" />
+                  </>
+                ) : (
+                  <>
+                    Data not Available
                     <FaTimes className="text-red-500 text-xl ml-2" />
                   </>
                 )}
@@ -261,9 +266,14 @@ const Dashboard = () => {
                     Confirmed
                     <FaCheck className="text-green-500 text-xl ml-2" />
                   </>
-                ) : (
+                ) : userData.rsvp === "no" ? (
                   <>
                     Not Attending
+                    <FaTimes className="text-red-500 text-xl ml-2" />
+                  </>
+                ) : (
+                  <>
+                    Data not Available
                     <FaTimes className="text-red-500 text-xl ml-2" />
                   </>
                 )}
