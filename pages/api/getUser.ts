@@ -10,7 +10,6 @@ export default async function addStudent(
     const snapshot = await getDoc(doc(db, "users", req.body.email));
     res.status(200).json(snapshot.data());
     res.end();
-    return;
   } catch {
     // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
     const email: string =
