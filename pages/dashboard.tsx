@@ -261,7 +261,7 @@ const Dashboard = () => {
 
       <Row className="flex justify-evenly items-stretch w-11/12 mt-4">
         <Col
-          md={4}
+          md={5}
           className="bg-white rounded-2xl flex flex-col items-center justify-start m-2"
         >
           <div className="h-8 w-10/12 text-center text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600 font-lexend text-base md:text-xl lg:text-2xl mt-4">
@@ -508,7 +508,7 @@ const Dashboard = () => {
           </div>
         </Col>
         <Col
-          md={7}
+          md={6}
           className="bg-white rounded-2xl flex flex-col items-center justify-start m-2"
         >
           <div className="h-8 text-center w-10/12 text-transparent bg-clip-text bg-gradient-to-r from-[#64e8de] to-[#8a64eb] font-lexend text-md md:text-xl lg:text-2xl mt-4">

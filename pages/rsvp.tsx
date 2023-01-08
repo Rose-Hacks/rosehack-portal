@@ -84,7 +84,6 @@ const RSVP = () => {
               </div>
             </>
           )}
-
           {!approved && (
             <p className="font-lexend text-xl text-center">
               Unfortunately, your application has not been accepted yet. Please
