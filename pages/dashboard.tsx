@@ -327,7 +327,7 @@ const Dashboard = () => {
             <div className="text-base sm:text-lg flex whitespace-nowrap items-center">
               <p className="p-0 m-0 inline font-bold">First Name: </p>
               <input
-                className="w-full border-2 enabled:border-black ml-1 pl-2 border-transparent my-1 bg-transparent rounded-full focus:outline-0"
+                className="text-black w-full border-2 enabled:border-black ml-1 pl-2 border-transparent my-1 bg-transparent rounded-full focus:outline-0"
                 name="first"
                 value={info.first}
                 placeholder={userData.first}
@@ -338,7 +338,7 @@ const Dashboard = () => {
             <div className="text-base sm:text-lg flex whitespace-nowrap items-center">
               <p className="p-0 m-0 inline font-bold">Last Name:</p>
               <input
-                className="w-full border-2 enabled:border-black ml-1 pl-2 border-transparent my-1 bg-transparent rounded-full"
+                className="text-black w-full border-2 enabled:border-black ml-1 pl-2 border-transparent my-1 bg-transparent rounded-full"
                 name="first"
                 value={info.last}
                 placeholder={userData.last}
@@ -349,7 +349,7 @@ const Dashboard = () => {
             <div className="text-base sm:text-lg flex whitespace-nowrap items-center">
               <p className="p-0 m-0 inline font-bold">Phone:</p>
               <input
-                className="w-full border-2 enabled:border-black ml-1 pl-2 border-transparent my-1 bg-transparent rounded-full"
+                className="text-black w-full border-2 enabled:border-black ml-1 pl-2 border-transparent my-1 bg-transparent rounded-full"
                 name="phone"
                 value={info.phone}
                 placeholder={userData.phone}
@@ -360,7 +360,7 @@ const Dashboard = () => {
             <div className="text-base sm:text-lg flex w-full my-1 items-center ">
               <p className="py-0 m-0 inline font-bold pr-2">Grade:</p>{" "}
               {operation === "view" && (
-                <span className="text-gray-500">{userData.grade}</span>
+                <span className="text-black">{userData.grade}</span>
               )}
               {operation === "edit" && (
                 <span className="w-full">
@@ -376,7 +376,7 @@ const Dashboard = () => {
             <div className="text-base sm:text-lg flex w-full my-1 items-center ">
               <p className="py-0 m-0 inline font-bold pr-2">School:</p>
               {operation === "view" && (
-                <span className="text-gray-500">{userData.school}</span>
+                <span className="text-black">{userData.school}</span>
               )}
               {operation === "edit" && (
                 <div className="w-full">
@@ -392,7 +392,7 @@ const Dashboard = () => {
             <div className="text-base sm:text-lg flex w-full my-1 items-center ">
               <p className="py-0 m-0 inline font-bold pr-2">Gender:</p>{" "}
               {operation === "view" && (
-                <span className="text-gray-500">{userData.gender}</span>
+                <span className="text-black">{userData.gender}</span>
               )}
               {operation === "edit" && (
                 <div className="w-full">
@@ -408,7 +408,7 @@ const Dashboard = () => {
             <div className="text-base sm:text-lg flex w-full my-1 items-center ">
               <p className="py-0 m-0 inline font-bold pr-2">Age:</p>{" "}
               {operation === "view" && (
-                <span className="text-gray-500">{userData.age}</span>
+                <span className="text-black">{userData.age}</span>
               )}
               {operation === "edit" && (
                 <div className="w-full">
@@ -424,7 +424,7 @@ const Dashboard = () => {
             <div className="text-base sm:text-lg flex w-full my-1 items-center ">
               <p className="py-0 m-0 inline font-bold pr-2">Major:</p>{" "}
               {operation === "view" && (
-                <span className="text-gray-500">{userData.major}</span>
+                <span className="text-black">{userData.major}</span>
               )}
               {operation === "edit" && (
                 <div className="w-full">
@@ -440,7 +440,7 @@ const Dashboard = () => {
             <div className="text-base sm:text-lg flex w-full my-1 items-center ">
               <p className="py-0 m-0 inline font-bold pr-2">Shirts:</p>{" "}
               {operation === "view" && (
-                <span className="text-gray-500">{userData.shirt}</span>
+                <span className="text-black">{userData.shirt}</span>
               )}
               {operation === "edit" && (
                 <div className="w-full">
