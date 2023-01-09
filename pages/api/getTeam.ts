@@ -7,7 +7,6 @@ export default async function addStudent(
   res: NextApiResponse
 ) {
   try {
-    console.log(req.body, req.body);
     const snapshot = await getDoc(doc(db, "teams", req.body.uid));
     res.status(200).json(snapshot.data());
     res.end();
