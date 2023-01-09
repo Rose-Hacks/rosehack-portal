@@ -324,8 +324,8 @@ const Dashboard = () => {
                 )}
               </div>
             </div>
-            <div className="text-base sm:text-lg flex whitespace-nowrap items-center">
-              <p className="p-0 m-0 inline font-bold">First Name: </p>
+            <div className="text-base sm:text-lg flex whitespace-nowrap items-center justify-between w-full">
+              <p className="p-0 m-0 inline font-bold ">First Name: </p>
               <input
                 className="!text-black w-full border-2 enabled:border-black ml-1 pl-2 border-transparent my-1 bg-transparent rounded-full focus:outline-0"
                 name="first"
@@ -335,7 +335,7 @@ const Dashboard = () => {
                 onChange={handleTyping}
               />
             </div>
-            <div className="text-base sm:text-lg flex whitespace-nowrap items-center">
+            <div className="text-base sm:text-lg flex whitespace-nowrap items-center justify-between w-full">
               <p className="p-0 m-0 inline font-bold">Last Name:</p>
               <input
                 className="!text-black w-full border-2 enabled:border-black ml-1 pl-2 border-transparent my-1 bg-transparent rounded-full"
@@ -346,7 +346,7 @@ const Dashboard = () => {
                 onChange={handleTyping}
               />
             </div>
-            <div className="text-base sm:text-lg flex whitespace-nowrap items-center">
+            <div className="text-base sm:text-lg flex whitespace-nowrap items-center justify-between w-full">
               <p className="p-0 m-0 inline font-bold">Phone:</p>
               <input
                 className="!text-black w-full border-2 enabled:border-black ml-1 pl-2 border-transparent my-1 bg-transparent rounded-full"
@@ -586,7 +586,7 @@ const Dashboard = () => {
               </div>
             </div>
           ) : inTeam ? (
-            <div className="flex flex-col justify-center items-start w-11/12  p-4">
+            <div className="flex flex-col justify-center items-start w-11/12 p-4">
               <div>
                 <p className="p-0 m-0 inline font-bold text-lg">Team Name:</p>{" "}
                 {team?.name}
