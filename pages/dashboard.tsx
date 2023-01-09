@@ -4,11 +4,21 @@ import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import axios from "axios";
-import { data } from "../components/data/register";
+import {
+  data,
+  grades,
+  shirts,
+  ages,
+  majors,
+  genders,
+} from "../components/data/register";
+import { schools } from "../components/data/schools";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { v4 as uuidv4 } from "uuid";
 import { FaRegCopy, FaCheck, FaTimes, FaRegClock } from "react-icons/fa";
+import Selector from "../components/Selector";
+import Schools from "../components/Schools";
 
 interface team_type {
   members: string[];
@@ -28,6 +38,8 @@ const Dashboard = () => {
   const [inTeam, setInTeam] = useState(false);
   const [showSnackBar, setShowSnackBar] = useState(false);
   const [message, setMessage] = useState("");
+  const [operation, setOperation] = useState("view");
+  const [info, setInfo] = useState(data);
 
   useEffect(() => {
     console.log(userData);
@@ -75,7 +87,7 @@ const Dashboard = () => {
       return;
     }
 
-    const response = await axios.post("/api/verifyTeam", { id: id });
+    const response = await axios.post("/api/verifyTeam", { id });
 
     if (response.status === 201) {
       setMessage("Invalid Team ID, please try again!");
@@ -125,7 +137,7 @@ const Dashboard = () => {
     const uuid = uuidv4();
     await axios.post("/api/newTeam", {
       email: userData.email,
-      uuid: uuid,
+      uuid,
       name: userData.first + " " + userData.last,
     });
 
@@ -181,9 +193,39 @@ const Dashboard = () => {
   };
 
   const handleLogOut = async () => {
-    const response = await logOut();
-    console.log(response);
+    await logOut();
   };
+
+  const handleEdit = () => {
+    setInfo(userData);
+    setOperation("edit");
+  };
+
+  const handleSave = () => {
+    setOperation("view");
+    console.log(info);
+    axios.post("/api/updateInfo", info);
+    setUserData(info);
+  };
+
+  const handleCancel = () => {
+    setOperation("view");
+  };
+
+  const handleTyping = (e: any) => {
+    setInfo({ ...info, [e.target.name]: e.target.value });
+  };
+
+  const handleInput = (data: string, value: string) => {
+    setInfo({ ...info, [data]: value });
+    console.log(data, value);
+  };
+
+  const handleSchool = (school: string) => {
+    setInfo({ ...info, school });
+    console.log(school);
+  };
+
   return (
     <div className="w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-400 flex flex-col justify-evenly items-center min-h-[90vh]">
       <a
@@ -219,15 +261,18 @@ const Dashboard = () => {
 
       <Row className="flex justify-evenly items-stretch w-11/12 mt-4">
         <Col
-          md={4}
+          md={5}
           className="bg-white rounded-2xl flex flex-col items-center justify-start m-2"
         >
-          <div className="h-8 text-center w-10/12 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600 font-lexend text-base md:text-xl lg:text-2xl mt-4">
-            INFORMATION
+          <div className="h-8 w-10/12 text-center text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600 font-lexend text-base md:text-xl lg:text-2xl mt-4">
+            <p>INFORMATION</p>
           </div>
 
           <div className="bg-gradient-to-r from-purple-400 to-pink-600 h-1 w-10/12" />
-          <div className="font-lexend flex flex-col justify-evenly items-start p-4">
+          <div className="font-lexend flex flex-col justify-evenly items-start p-4 w-full">
+            <div className="text-base sm:text-lg">
+              <p className="p-0 m-0 inline font-bold ">Email:</p> {user?.email}
+            </div>
             <div className="flex items-center justify-center">
               <p className="p-0 m-0 inline font-bold text-base sm:text-lg">
                 Status:
@@ -243,9 +288,14 @@ const Dashboard = () => {
                     Approved
                     <FaCheck className="text-green-500 text-xl ml-2" />
                   </>
-                ) : (
+                ) : userData.status === "rejected" ? (
                   <>
                     Rejected
+                    <FaTimes className="text-red-500 text-xl ml-2" />
+                  </>
+                ) : (
+                  <>
+                    Data not Available
                     <FaTimes className="text-red-500 text-xl ml-2" />
                   </>
                 )}
@@ -261,55 +311,164 @@ const Dashboard = () => {
                     Confirmed
                     <FaCheck className="text-green-500 text-xl ml-2" />
                   </>
-                ) : (
+                ) : userData.rsvp === "no" ? (
                   <>
                     Not Attending
+                    <FaTimes className="text-red-500 text-xl ml-2" />
+                  </>
+                ) : (
+                  <>
+                    Data not Available
                     <FaTimes className="text-red-500 text-xl ml-2" />
                   </>
                 )}
               </div>
             </div>
+            <div className="text-base sm:text-lg flex whitespace-nowrap items-center">
+              <p className="p-0 m-0 inline font-bold">First Name: </p>
+              <input
+                className="w-full border-2 enabled:border-black ml-1 pl-2 border-transparent my-1 bg-transparent rounded-full focus:outline-0"
+                name="first"
+                value={info.first}
+                placeholder={userData.first}
+                disabled={operation !== "edit"}
+                onChange={handleTyping}
+              />
+            </div>
+            <div className="text-base sm:text-lg flex whitespace-nowrap items-center">
+              <p className="p-0 m-0 inline font-bold">Last Name:</p>
+              <input
+                className="w-full border-2 enabled:border-black ml-1 pl-2 border-transparent my-1 bg-transparent rounded-full"
+                name="first"
+                value={info.last}
+                placeholder={userData.last}
+                disabled={operation !== "edit"}
+                onChange={handleTyping}
+              />
+            </div>
+            <div className="text-base sm:text-lg flex whitespace-nowrap items-center">
+              <p className="p-0 m-0 inline font-bold">Phone:</p>
+              <input
+                className="w-full border-2 enabled:border-black ml-1 pl-2 border-transparent my-1 bg-transparent rounded-full"
+                name="phone"
+                value={info.phone}
+                placeholder={userData.phone}
+                disabled={operation !== "edit"}
+                onChange={handleTyping}
+              />
+            </div>
+            <div className="text-base sm:text-lg flex w-full my-1 items-center ">
+              <p className="py-0 m-0 inline font-bold pr-2">Grade:</p>{" "}
+              {operation === "view" && (
+                <span className="text-gray-500">{userData.grade}</span>
+              )}
+              {operation === "edit" && (
+                <span className="w-full">
+                  <Selector
+                    options={grades}
+                    user={info}
+                    field="grade"
+                    handleInput={handleInput}
+                  />
+                </span>
+              )}
+            </div>
+            <div className="text-base sm:text-lg flex w-full my-1 items-center ">
+              <p className="py-0 m-0 inline font-bold pr-2">School:</p>
+              {operation === "view" && (
+                <span className="text-gray-500">{userData.school}</span>
+              )}
+              {operation === "edit" && (
+                <div className="w-full">
+                  <Schools
+                    schools={schools}
+                    school={info.school}
+                    handleSchool={handleSchool}
+                  />
+                </div>
+              )}
+            </div>
 
-            <div className="text-base sm:text-lg">
-              <p className="p-0 m-0 inline font-bold ">Email:</p> {user?.email}
+            <div className="text-base sm:text-lg flex w-full my-1 items-center ">
+              <p className="py-0 m-0 inline font-bold pr-2">Gender:</p>{" "}
+              {operation === "view" && (
+                <span className="text-gray-500">{userData.gender}</span>
+              )}
+              {operation === "edit" && (
+                <div className="w-full">
+                  <Selector
+                    options={genders}
+                    user={info}
+                    field="gender"
+                    handleInput={handleInput}
+                  />
+                </div>
+              )}
             </div>
-            <div className="text-base sm:text-lg">
-              <p className="p-0 m-0 inline font-bold">Phone:</p>{" "}
-              {userData.phone}
+            <div className="text-base sm:text-lg flex w-full my-1 items-center ">
+              <p className="py-0 m-0 inline font-bold pr-2">Age:</p>{" "}
+              {operation === "view" && (
+                <span className="text-gray-500">{userData.age}</span>
+              )}
+              {operation === "edit" && (
+                <div className="w-full">
+                  <Selector
+                    options={ages}
+                    user={info}
+                    field="age"
+                    handleInput={handleInput}
+                  />
+                </div>
+              )}
             </div>
-            <div className="text-base sm:text-lg">
-              <p className="p-0 m-0 inline font-bold">Grade:</p>{" "}
-              {userData.grade}
+            <div className="text-base sm:text-lg flex w-full my-1 items-center ">
+              <p className="py-0 m-0 inline font-bold pr-2">Major:</p>{" "}
+              {operation === "view" && (
+                <span className="text-gray-500">{userData.major}</span>
+              )}
+              {operation === "edit" && (
+                <div className="w-full">
+                  <Selector
+                    options={majors}
+                    user={info}
+                    field="major"
+                    handleInput={handleInput}
+                  />
+                </div>
+              )}
             </div>
-            <div className="text-base sm:text-lg">
-              <p className="p-0 m-0 inline font-bold">School:</p>{" "}
-              {userData.school}
+            <div className="text-base sm:text-lg flex w-full my-1 items-center ">
+              <p className="py-0 m-0 inline font-bold pr-2">Shirts:</p>{" "}
+              {operation === "view" && (
+                <span className="text-gray-500">{userData.shirt}</span>
+              )}
+              {operation === "edit" && (
+                <div className="w-full">
+                  <Selector
+                    options={shirts}
+                    user={info}
+                    field="shirt"
+                    handleInput={handleInput}
+                  />
+                </div>
+              )}
             </div>
-            <div className="text-base sm:text-lg">
-              <p className="p-0 m-0 inline font-bold">Gender:</p>{" "}
-              {userData.gender}
-            </div>
-            <div className="text-base sm:text-lg">
-              <p className="p-0 m-0 inline font-bold">Age:</p> {userData.age}
-            </div>
-            <div className="text-base sm:text-lg">
-              <p className="p-0 m-0 inline font-bold">Major:</p>{" "}
-              {userData.major}
-            </div>
-            <div className="text-base sm:text-lg">
+            {/* NOT ADDING YET TOO LAZY LOLOL */}
+            {/* START LAZINESS */}
+            {/* <div className="text-base sm:text-lg">
               <p className="p-0 m-0 inline font-bold">In Person:</p>{" "}
               {userData.in_person ? "yes" : "no"}
             </div>
             <div className="text-base sm:text-lg">
               <p className="p-0 m-0 inline font-bold">Vaccinated:</p>{" "}
               {userData.covid ? "yes" : "no"}
-            </div>
-            <div className="text-base sm:text-lg">
+            </div> */}
+            {/* <div className="text-base sm:text-lg">
               <p className="p-0 m-0 inline font-bold">Dietary Restrictions:</p>{" "}
-              {userData.hindu ? "Hindu," : ""}
-              {userData.kosher ? " Kosher," : ""}
-              {userData.vegan ? " Vegan," : ""}
-              {userData.vegetarian ? " Vegetarian" : ""}
+              {userData.hindu ? "Hindu |" : ""}
+              {userData.kosher ? " Kosher |" : ""}
+              {userData.vegan ? " Vegan |" : ""}
+              {userData.vegetarian ? " Vegetarian |" : ""}
               {!(
                 userData.hindu ||
                 userData.kosher ||
@@ -318,11 +477,38 @@ const Dashboard = () => {
               )
                 ? "none"
                 : ""}
-            </div>
+            </div> */}
+            {/* END LAZINESS */}
+            {operation === "view" && (
+              <div className="flex justify-end items-center w-full">
+                <button
+                  className="rounded-full bg-gradient-to-r from-[#12c2e9] to-[#c471ed] hover:scale-105 px-4 py-2 font-lexend font-bold text-white"
+                  onClick={handleEdit}
+                >
+                  Edit
+                </button>
+              </div>
+            )}
+            {operation === "edit" && (
+              <div className="flex justify-between items-center w-full mt-3">
+                <button
+                  className="rounded-full bg-gradient-to-r from-[#56CCF2] to-[#2F80ED] hover:scale-105 px-4 py-2 font-lexend font-bold text-white"
+                  onClick={handleCancel}
+                >
+                  Cancel
+                </button>
+                <button
+                  className="rounded-full bg-gradient-to-r from-[#7F00FF] to-[#E100FF] hover:scale-105 px-4 py-2 font-lexend font-bold text-white"
+                  onClick={handleSave}
+                >
+                  Save
+                </button>
+              </div>
+            )}
           </div>
         </Col>
         <Col
-          md={7}
+          md={6}
           className="bg-white rounded-2xl flex flex-col items-center justify-start m-2"
         >
           <div className="h-8 text-center w-10/12 text-transparent bg-clip-text bg-gradient-to-r from-[#64e8de] to-[#8a64eb] font-lexend text-md md:text-xl lg:text-2xl mt-4">
@@ -346,13 +532,13 @@ const Dashboard = () => {
               />
               <div className="flex justify-evenly w-full m-3">
                 <button
-                  className="hover:scale-105 rounded-xl bg-gradient-to-r from-pink-400 to-blue-300 text-lg font-lexend font-bold text-white text-center px-3 py-2"
+                  className="hover:scale-105 rounded-full bg-gradient-to-r from-pink-400 to-blue-300 text-lg font-lexend font-bold text-white text-center px-3 py-2"
                   onClick={async () => await renameTeam()}
                 >
                   Create
                 </button>
                 <button
-                  className="hover:scale-105 rounded-xl bg-gradient-to-r from-[#64e8de] to-[#8a64eb] text-lg font-lexend font-bold text-white text-center px-3 py-2"
+                  className="hover:scale-105 rounded-full bg-gradient-to-r from-[#64e8de] to-[#8a64eb] text-lg font-lexend font-bold text-white text-center px-3 py-2"
                   onClick={() => {
                     setCreate(false);
                   }}
@@ -376,13 +562,13 @@ const Dashboard = () => {
               />
               <div className="flex justify-evenly w-full m-3">
                 <button
-                  className="hover:scale-105 rounded-xl bg-gradient-to-r from-pink-400 to-blue-300 text-lg font-lexend font-bold text-white text-center px-3 py-2"
+                  className="hover:scale-105 rounded-full bg-gradient-to-r from-pink-400 to-blue-300 text-lg font-lexend font-bold text-white text-center px-3 py-2"
                   onClick={joinTeam}
                 >
                   Join
                 </button>
                 <button
-                  className="hover:scale-105 rounded-xl bg-gradient-to-r from-[#64e8de] to-[#8a64eb] text-lg font-lexend font-bold text-white text-center px-3 py-2"
+                  className="hover:scale-105 rounded-full bg-gradient-to-r from-[#64e8de] to-[#8a64eb] text-lg font-lexend font-bold text-white text-center px-3 py-2"
                   onClick={() => {
                     setJoin(false);
                   }}
@@ -437,7 +623,7 @@ const Dashboard = () => {
                   }}
                 />
                 <button
-                  className="w-1/4 ml-2 px-1 py-0 rounded-md bg-pink-400 text-white font-lexend font-bold text-lg hover:scale-105"
+                  className="w-1/4 ml-2 px-1 py-0 rounded-full bg-pink-400 text-white font-lexend font-bold text-lg hover:scale-105"
                   onClick={() => renameTeam()}
                 >
                   Rename
@@ -445,13 +631,13 @@ const Dashboard = () => {
               </div>
               <div className="w-full flex justify-evenly items-center my-3">
                 <button
-                  className="hover:scale-105 rounded-xl bg-gradient-to-r from-[#64e8de] to-[#8a64eb] text-lg font-lexend font-bold text-white text-center px-3 py-2"
+                  className="hover:scale-105 rounded-full bg-gradient-to-r from-[#64e8de] to-[#8a64eb] text-lg font-lexend font-bold text-white text-center px-3 py-2"
                   onClick={leaveTeam}
                 >
                   Leave Team
                 </button>
                 <button
-                  className="hover:scale-105 rounded-xl bg-gradient-to-r from-pink-400 to-blue-300 text-lg font-lexend font-bold text-white text-center px-3 py-2"
+                  className="hover:scale-105 rounded-full bg-gradient-to-r from-pink-400 to-blue-300 text-lg font-lexend font-bold text-white text-center px-3 py-2"
                   onClick={() => {
                     setJoin(true);
                   }}
@@ -467,7 +653,7 @@ const Dashboard = () => {
               </div>
               <div className="w-10/12 flex justify-evenly m-3">
                 <button
-                  className="hover:scale-105 rounded-xl bg-gradient-to-r from-pink-400 to-blue-300 text-lg font-lexend font-bold text-white text-center px-3 py-2"
+                  className="hover:scale-105 rounded-full bg-gradient-to-r from-pink-400 to-blue-300 text-lg font-lexend font-bold text-white text-center px-3 py-2"
                   onClick={() => {
                     setJoin(true);
                   }}
@@ -475,7 +661,7 @@ const Dashboard = () => {
                   Join
                 </button>
                 <button
-                  className="hover:scale-105 rounded-xl bg-gradient-to-r from-[#64e8de] to-[#8a64eb] text-lg font-lexend font-bold text-white text-center px-3 py-2"
+                  className="hover:scale-105 rounded-full bg-gradient-to-r from-[#64e8de] to-[#8a64eb] text-lg font-lexend font-bold text-white text-center px-3 py-2"
                   onClick={() => setCreate(true)}
                 >
                   Create
@@ -487,7 +673,7 @@ const Dashboard = () => {
       </Row>
       <button
         onClick={() => handleLogOut()}
-        className="hover:scale-105 rounded-xl bg-gradient-to-r from-[#6ee2f5] to-[#6454f0] font-lexend font-bold text-md md:text-xl lg:text-3xl text-white text-center px-3 py-2 m-2"
+        className="hover:scale-105 rounded-full bg-gradient-to-r from-[#6ee2f5] to-[#6454f0] font-lexend font-bold text-md md:text-xl lg:text-3xl text-white text-center px-3 py-2 m-2"
       >
         Logout
       </button>
