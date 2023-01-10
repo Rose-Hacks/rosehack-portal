@@ -329,7 +329,7 @@ const Dashboard = () => {
               <input
                 className="!text-black w-full border-2 enabled:border-black ml-1 pl-2 border-transparent my-1 bg-transparent rounded-full focus:outline-0"
                 name="first"
-                value={info.first}
+                value={info.first !== "" ? info.first : userData.first}
                 placeholder={userData.first}
                 disabled={operation !== "edit"}
                 onChange={handleTyping}
@@ -340,7 +340,7 @@ const Dashboard = () => {
               <input
                 className="!text-black w-full border-2 enabled:border-black ml-1 pl-2 border-transparent my-1 bg-transparent rounded-full"
                 name="first"
-                value={info.last}
+                value={info.last !== "" ? info.last : userData.last}
                 placeholder={userData.last}
                 disabled={operation !== "edit"}
                 onChange={handleTyping}
@@ -351,7 +351,7 @@ const Dashboard = () => {
               <input
                 className="!text-black w-full border-2 enabled:border-black ml-1 pl-2 border-transparent my-1 bg-transparent rounded-full"
                 name="phone"
-                value={info.phone}
+                value={info.phone !== "" ? info.phone : userData.phone}
                 placeholder={userData.phone}
                 disabled={operation !== "edit"}
                 onChange={handleTyping}
