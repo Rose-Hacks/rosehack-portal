@@ -49,13 +49,16 @@ const Dashboard = () => {
         const response = await axios.post("/api/getUser", {
           email: currentState.email,
         });
-        setUserData(response.data);
-        const teamResponse = await axios.post("/api/getTeam", {
-          uid: response.data.team,
-        });
-        setTeam(teamResponse.data);
-        if (teamResponse.data.name !== "Untitled Team") {
-          setInTeam(true);
+        setUserData({ ...userData, email: currentState.email });
+        if (response.data !== "") {
+          setUserData(response.data);
+          const teamResponse = await axios.post("/api/getTeam", {
+            uid: response.data.team,
+          });
+          setTeam(teamResponse.data);
+          if (teamResponse.data.name !== "Untitled Team") {
+            setInTeam(true);
+          }
         }
       }
     });
@@ -173,12 +176,12 @@ const Dashboard = () => {
 
   const renameTeam = async () => {
     if (teamName === "Untitled Team") {
-      setMessage("please use a different name!");
+      setMessage("Please use a different name!");
       snackBar();
       return;
     }
     if (teamName === "") {
-      setMessage("please enter a team name!");
+      setMessage("Please enter a team name!");
       snackBar();
       return;
     }
@@ -203,7 +206,6 @@ const Dashboard = () => {
 
   const handleSave = () => {
     setOperation("view");
-    console.log(info);
     axios.post("/api/updateInfo", info);
     setUserData(info);
   };
