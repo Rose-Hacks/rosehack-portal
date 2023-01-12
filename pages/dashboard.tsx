@@ -45,7 +45,7 @@ const Dashboard = () => {
     console.log(userData);
     onAuthStateChanged(auth, async (currentState) => {
       if (currentState === null) router.push("/");
-      else if (currentState !== null) {
+      else if (currentState.email !== null) {
         const response = await axios.post("/api/getUser", {
           email: currentState.email,
         });
