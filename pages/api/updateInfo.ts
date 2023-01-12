@@ -1,14 +1,14 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { db } from "../../firebase";
 import { doc, setDoc } from "firebase/firestore";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
 export default async function updateInfo(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  if(req.body.team === "") {
-    req.body.team = uuidv4()
+  if (req.body.team === "") {
+    req.body.team = uuidv4();
     await setDoc(doc(db, "teams", req.body.team), {
       logs: "",
       // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
@@ -16,7 +16,7 @@ export default async function updateInfo(
       name: "Untitled Team",
       prize: false,
       prizeLogs: "",
-      status: "approved"
+      status: "approved",
     });
   }
   await setDoc(doc(db, "users", req.body.email), req.body);
