@@ -4,21 +4,11 @@ import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import axios from "axios";
-import {
-  data,
-  grades,
-  shirts,
-  ages,
-  majors,
-  genders,
-} from "../components/data/register";
-import { schools } from "../components/data/schools";
+import { data } from "../components/data/register";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { v4 as uuidv4 } from "uuid";
 import { FaRegCopy, FaCheck, FaTimes, FaRegClock } from "react-icons/fa";
-import Selector from "../components/Selector";
-import Schools from "../components/Schools";
 
 interface team_type {
   members: string[];
@@ -38,8 +28,6 @@ const Dashboard = () => {
   const [inTeam, setInTeam] = useState(false);
   const [showSnackBar, setShowSnackBar] = useState(false);
   const [message, setMessage] = useState("");
-  const [operation] = useState("view");
-  const [info, setInfo] = useState(data);
 
   useEffect(() => {
     console.log(userData);
@@ -197,35 +185,6 @@ const Dashboard = () => {
 
   const handleLogOut = async () => {
     await logOut();
-  };
-
-  // const handleEdit = () => {
-  //   setInfo(userData);
-  //   setOperation("edit");
-  // };
-
-  // const handleSave = () => {
-  //   setOperation("view");
-  //   axios.post("/api/updateInfo", info);
-  //   setUserData(info);
-  // };
-
-  // const handleCancel = () => {
-  //   setOperation("view");
-  // };
-
-  const handleTyping = (e: any) => {
-    setInfo({ ...info, [e.target.name]: e.target.value });
-  };
-
-  const handleInput = (data: string, value: string) => {
-    setInfo({ ...info, [data]: value });
-    console.log(data, value);
-  };
-
-  const handleSchool = (school: string) => {
-    setInfo({ ...info, school });
-    console.log(school);
   };
 
   return (
