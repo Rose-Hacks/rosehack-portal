@@ -24,12 +24,20 @@ export default function Home() {
   }, []);
 
   const handleReset = () => {
+    if (email === "") {
+      setMessage("Please enter an email!");
+      snackBar();
+      return;
+    }
+
     sendPasswordResetEmail(auth, email)
       .then((response) => {
-        console.log(response);
+        setMessage("Please check your email for a reset link!");
+        snackBar();
       })
-      .catch((error) => {
-        console.log(error);
+      .catch(() => {
+        setMessage("Please ensure you have a valid email!");
+        snackBar();
       });
   };
 
