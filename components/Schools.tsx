@@ -18,9 +18,9 @@ interface props_toggle {
 
 const CustomToggle = React.forwardRef(
   ({ children, onClick }: props_toggle, ref: any) => (
-    <div className="text-center w-full bg-transparent !border-2 border-solid border-black !rounded-full focus:border-black active:border-black py-0 px-2">
+    <div className="flex flex-row items-center justify-between text-center w-full bg-transparent !border-2 border-solid border-black !rounded-full focus:border-black active:border-black py-0 px-2">
       <a
-        className="whitespace-nowrap !font-lexend flex justify-start items-center text-black no-underline overflow-hidden text-left text-base"
+        className="!text-lg w-11/12 whitespace-nowrap !font-lexend flex justify-start items-center text-black no-underline overflow-hidden text-left text-base"
         href=""
         ref={ref}
         onClick={(e) => {
@@ -29,8 +29,8 @@ const CustomToggle = React.forwardRef(
         }}
       >
         {children}
-        <FaChevronDown className="pl-2" />
       </a>
+      <FaChevronDown className="text-xs" />
     </div>
   )
 );

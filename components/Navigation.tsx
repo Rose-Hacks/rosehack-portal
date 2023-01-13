@@ -44,6 +44,12 @@ const Navigation = () => {
               RSVP
             </Nav.Link>
             <Nav.Link
+              href="/checkin"
+              className="!text-base text-center text-white p-1 mx-2 hover:underline hover:drop-shadow-pink decoration-4 underline-offset-6"
+            >
+              Checkin
+            </Nav.Link>
+            <Nav.Link
               href="https://rosehack.com/"
               className="!text-base text-center text-white p-1 mx-2 hover:underline hover:drop-shadow-pink decoration-4 underline-offset-6"
             >

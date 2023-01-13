@@ -4,21 +4,11 @@ import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import axios from "axios";
-import {
-  data,
-  grades,
-  shirts,
-  ages,
-  majors,
-  genders,
-} from "../components/data/register";
-import { schools } from "../components/data/schools";
+import { data } from "../components/data/register";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { v4 as uuidv4 } from "uuid";
 import { FaRegCopy, FaCheck, FaTimes, FaRegClock } from "react-icons/fa";
-import Selector from "../components/Selector";
-import Schools from "../components/Schools";
 
 interface team_type {
   members: string[];
@@ -38,24 +28,25 @@ const Dashboard = () => {
   const [inTeam, setInTeam] = useState(false);
   const [showSnackBar, setShowSnackBar] = useState(false);
   const [message, setMessage] = useState("");
-  const [operation, setOperation] = useState("view");
-  const [info, setInfo] = useState(data);
 
   useEffect(() => {
     console.log(userData);
     onAuthStateChanged(auth, async (currentState) => {
       if (currentState === null) router.push("/");
-      else if (currentState !== null) {
+      else if (currentState.email !== null) {
         const response = await axios.post("/api/getUser", {
           email: currentState.email,
         });
-        setUserData(response.data);
-        const teamResponse = await axios.post("/api/getTeam", {
-          uid: response.data.team,
-        });
-        setTeam(teamResponse.data);
-        if (teamResponse.data.name !== "Untitled Team") {
-          setInTeam(true);
+        setUserData({ ...userData, email: currentState.email });
+        if (response.data !== "") {
+          setUserData(response.data);
+          const teamResponse = await axios.post("/api/getTeam", {
+            uid: response.data.team,
+          });
+          setTeam(teamResponse.data);
+          if (teamResponse.data.name !== "Untitled Team") {
+            setInTeam(true);
+          }
         }
       }
     });
@@ -173,12 +164,12 @@ const Dashboard = () => {
 
   const renameTeam = async () => {
     if (teamName === "Untitled Team") {
-      setMessage("please use a different name!");
+      setMessage("Please use a different name!");
       snackBar();
       return;
     }
     if (teamName === "") {
-      setMessage("please enter a team name!");
+      setMessage("Please enter a team name!");
       snackBar();
       return;
     }
@@ -194,36 +185,6 @@ const Dashboard = () => {
 
   const handleLogOut = async () => {
     await logOut();
-  };
-
-  const handleEdit = () => {
-    setInfo(userData);
-    setOperation("edit");
-  };
-
-  const handleSave = () => {
-    setOperation("view");
-    console.log(info);
-    axios.post("/api/updateInfo", info);
-    setUserData(info);
-  };
-
-  const handleCancel = () => {
-    setOperation("view");
-  };
-
-  const handleTyping = (e: any) => {
-    setInfo({ ...info, [e.target.name]: e.target.value });
-  };
-
-  const handleInput = (data: string, value: string) => {
-    setInfo({ ...info, [data]: value });
-    console.log(data, value);
-  };
-
-  const handleSchool = (school: string) => {
-    setInfo({ ...info, school });
-    console.log(school);
   };
 
   return (
@@ -271,13 +232,13 @@ const Dashboard = () => {
           <div className="bg-gradient-to-r from-purple-400 to-pink-600 h-1 w-10/12" />
           <div className="font-lexend flex flex-col justify-evenly items-start p-4 w-full">
             <div className="text-base sm:text-lg">
-              <p className="p-0 m-0 inline font-bold ">Email:</p> {user?.email}
+              <p className="p-0 m-0 inline font-bold">Email: {user?.email}</p>
             </div>
             <div className="flex items-center justify-center">
               <p className="p-0 m-0 inline font-bold text-base sm:text-lg">
                 Status:
               </p>
-              <div className="flex items-center ml-1 text-base sm:text-lg">
+              <div className="flex items-center ml-1 text-base sm:text-lg font-bold">
                 {userData.status === "pending" ? (
                   <>
                     Pending
@@ -305,7 +266,7 @@ const Dashboard = () => {
               <p className="p-0 m-0 inline font-bold text-base sm:text-lg">
                 RSVP:
               </p>
-              <div className="flex items-center ml-1 text-base sm:text-lg">
+              <div className="flex items-center ml-1 text-base sm:text-lg font-bold">
                 {userData.rsvp === "yes" ? (
                   <>
                     Confirmed
@@ -324,187 +285,50 @@ const Dashboard = () => {
                 )}
               </div>
             </div>
-            <div className="text-base sm:text-lg flex whitespace-nowrap items-center">
-              <p className="p-0 m-0 inline font-bold">First Name: </p>
-              <input
-                className="text-black w-full border-2 enabled:border-black ml-1 pl-2 border-transparent my-1 bg-transparent rounded-full focus:outline-0"
-                name="first"
-                value={info.first}
-                placeholder={userData.first}
-                disabled={operation !== "edit"}
-                onChange={handleTyping}
-              />
+            <div className="text-base sm:text-lg flex whitespace-nowrap items-center justify-between w-full">
+              <p className="p-0 m-0 inline font-bold">
+                First Name: {userData.first}
+              </p>
             </div>
-            <div className="text-base sm:text-lg flex whitespace-nowrap items-center">
-              <p className="p-0 m-0 inline font-bold">Last Name:</p>
-              <input
-                className="text-black w-full border-2 enabled:border-black ml-1 pl-2 border-transparent my-1 bg-transparent rounded-full"
-                name="first"
-                value={info.last}
-                placeholder={userData.last}
-                disabled={operation !== "edit"}
-                onChange={handleTyping}
-              />
+            <div className="text-base sm:text-lg flex whitespace-nowrap items-center justify-between w-full">
+              <p className="p-0 m-0 inline font-bold">
+                Last Name: {userData.last}
+              </p>
             </div>
-            <div className="text-base sm:text-lg flex whitespace-nowrap items-center">
-              <p className="p-0 m-0 inline font-bold">Phone:</p>
-              <input
-                className="text-black w-full border-2 enabled:border-black ml-1 pl-2 border-transparent my-1 bg-transparent rounded-full"
-                name="phone"
-                value={info.phone}
-                placeholder={userData.phone}
-                disabled={operation !== "edit"}
-                onChange={handleTyping}
-              />
+            <div className="text-base sm:text-lg flex whitespace-nowrap items-center justify-between w-full">
+              <p className="p-0 m-0 inline font-bold">
+                Phone: {userData.phone}
+              </p>
             </div>
-            <div className="text-base sm:text-lg flex w-full my-1 items-center ">
-              <p className="py-0 m-0 inline font-bold pr-2">Grade:</p>{" "}
-              {operation === "view" && (
-                <span className="text-black">{userData.grade}</span>
-              )}
-              {operation === "edit" && (
-                <span className="w-full">
-                  <Selector
-                    options={grades}
-                    user={info}
-                    field="grade"
-                    handleInput={handleInput}
-                  />
-                </span>
-              )}
+            <div className="text-base sm:text-lg flex w-full my-1 items-start justify-between">
+              <p className="p-0 m-0 inline font-bold">
+                Grade: {userData.grade}
+              </p>
             </div>
-            <div className="text-base sm:text-lg flex w-full my-1 items-center ">
-              <p className="py-0 m-0 inline font-bold pr-2">School:</p>
-              {operation === "view" && (
-                <span className="text-black">{userData.school}</span>
-              )}
-              {operation === "edit" && (
-                <div className="w-full">
-                  <Schools
-                    schools={schools}
-                    school={info.school}
-                    handleSchool={handleSchool}
-                  />
-                </div>
-              )}
+            <div className="text-base sm:text-lg flex w-full my-1 items-start justify-between">
+              <p className="p-0 m-0 inline font-bold">
+                School: {userData.school}
+              </p>
             </div>
 
-            <div className="text-base sm:text-lg flex w-full my-1 items-center ">
-              <p className="py-0 m-0 inline font-bold pr-2">Gender:</p>{" "}
-              {operation === "view" && (
-                <span className="text-black">{userData.gender}</span>
-              )}
-              {operation === "edit" && (
-                <div className="w-full">
-                  <Selector
-                    options={genders}
-                    user={info}
-                    field="gender"
-                    handleInput={handleInput}
-                  />
-                </div>
-              )}
+            <div className="text-base sm:text-lg flex w-full my-1 items-center justify-between">
+              <p className="p-0 m-0 inline font-bold">
+                Gender: {userData.gender}
+              </p>
             </div>
-            <div className="text-base sm:text-lg flex w-full my-1 items-center ">
-              <p className="py-0 m-0 inline font-bold pr-2">Age:</p>{" "}
-              {operation === "view" && (
-                <span className="text-black">{userData.age}</span>
-              )}
-              {operation === "edit" && (
-                <div className="w-full">
-                  <Selector
-                    options={ages}
-                    user={info}
-                    field="age"
-                    handleInput={handleInput}
-                  />
-                </div>
-              )}
+            <div className="text-base sm:text-lg flex w-full my-1 items-center justify-between">
+              <p className="p-0 m-0 inline font-bold">Age: {userData.age}</p>
             </div>
-            <div className="text-base sm:text-lg flex w-full my-1 items-center ">
-              <p className="py-0 m-0 inline font-bold pr-2">Major:</p>{" "}
-              {operation === "view" && (
-                <span className="text-black">{userData.major}</span>
-              )}
-              {operation === "edit" && (
-                <div className="w-full">
-                  <Selector
-                    options={majors}
-                    user={info}
-                    field="major"
-                    handleInput={handleInput}
-                  />
-                </div>
-              )}
+            <div className="text-base sm:text-lg flex w-full my-1 items-center justify-between">
+              <p className="p-0 m-0 inline font-bold">
+                Major: {userData.major}
+              </p>
             </div>
-            <div className="text-base sm:text-lg flex w-full my-1 items-center ">
-              <p className="py-0 m-0 inline font-bold pr-2">Shirts:</p>{" "}
-              {operation === "view" && (
-                <span className="text-black">{userData.shirt}</span>
-              )}
-              {operation === "edit" && (
-                <div className="w-full">
-                  <Selector
-                    options={shirts}
-                    user={info}
-                    field="shirt"
-                    handleInput={handleInput}
-                  />
-                </div>
-              )}
+            <div className="text-base sm:text-lg flex w-full my-1 items-center justify-between">
+              <p className="p-0 m-0 inline font-bold">
+                Shirt: {userData.shirt}
+              </p>
             </div>
-            {/* NOT ADDING YET TOO LAZY LOLOL */}
-            {/* START LAZINESS */}
-            {/* <div className="text-base sm:text-lg">
-              <p className="p-0 m-0 inline font-bold">In Person:</p>{" "}
-              {userData.in_person ? "yes" : "no"}
-            </div>
-            <div className="text-base sm:text-lg">
-              <p className="p-0 m-0 inline font-bold">Vaccinated:</p>{" "}
-              {userData.covid ? "yes" : "no"}
-            </div> */}
-            {/* <div className="text-base sm:text-lg">
-              <p className="p-0 m-0 inline font-bold">Dietary Restrictions:</p>{" "}
-              {userData.hindu ? "Hindu |" : ""}
-              {userData.kosher ? " Kosher |" : ""}
-              {userData.vegan ? " Vegan |" : ""}
-              {userData.vegetarian ? " Vegetarian |" : ""}
-              {!(
-                userData.hindu ||
-                userData.kosher ||
-                userData.vegan ||
-                userData.vegetarian
-              )
-                ? "none"
-                : ""}
-            </div> */}
-            {/* END LAZINESS */}
-            {operation === "view" && (
-              <div className="flex justify-end items-center w-full">
-                <button
-                  className="rounded-full bg-gradient-to-r from-[#12c2e9] to-[#c471ed] hover:scale-105 px-4 py-2 font-lexend font-bold text-white"
-                  onClick={handleEdit}
-                >
-                  Edit
-                </button>
-              </div>
-            )}
-            {operation === "edit" && (
-              <div className="flex justify-between items-center w-full mt-3">
-                <button
-                  className="rounded-full bg-gradient-to-r from-[#56CCF2] to-[#2F80ED] hover:scale-105 px-4 py-2 font-lexend font-bold text-white"
-                  onClick={handleCancel}
-                >
-                  Cancel
-                </button>
-                <button
-                  className="rounded-full bg-gradient-to-r from-[#7F00FF] to-[#E100FF] hover:scale-105 px-4 py-2 font-lexend font-bold text-white"
-                  onClick={handleSave}
-                >
-                  Save
-                </button>
-              </div>
-            )}
           </div>
         </Col>
         <Col
@@ -578,7 +402,7 @@ const Dashboard = () => {
               </div>
             </div>
           ) : inTeam ? (
-            <div className="flex flex-col justify-center items-start w-11/12  p-4">
+            <div className="flex flex-col justify-center items-start w-11/12 p-4">
               <div>
                 <p className="p-0 m-0 inline font-bold text-lg">Team Name:</p>{" "}
                 {team?.name}
