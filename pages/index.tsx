@@ -5,6 +5,7 @@ import {
   browserLocalPersistence,
   signInWithEmailAndPassword,
   onAuthStateChanged,
+  sendPasswordResetEmail,
 } from "firebase/auth";
 import { auth } from "../firebase";
 import { useRouter } from "next/router";
@@ -21,6 +22,16 @@ export default function Home() {
       if (currentState !== null) void router.push("/dashboard");
     });
   }, []);
+
+  const handleReset = () => {
+    sendPasswordResetEmail(auth, email)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   const snackBar = () => {
     setShowSnackBar(true);
@@ -104,6 +115,15 @@ export default function Home() {
           placeholder="password"
           className="rounded-md font-lexend text-gray-700 p-2 w-10/12 bg-transparent border-2 border-gray-500 focus:outline-0"
         />
+        <div className="w-10/12 flex justify-end items-center">
+          <p
+            className="font-lexend text-base hover:text-pink-400 hover:cursor-pointer"
+            onClick={handleReset}
+          >
+            Forgot Password?
+          </p>
+        </div>
+
         <button
           // eslint-disable-next-line @typescript-eslint/no-misused-promises, @typescript-eslint/promise-function-async
           onClick={() => handleSubmit(email, password)}

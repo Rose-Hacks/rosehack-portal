@@ -8,7 +8,7 @@ const ProfilePage = () => {
   const [data, setData] = useState({
     email: "",
     shirt: "",
-    rsvp: false,
+    rsvp: "",
     first: "",
     last: "",
   });
@@ -27,7 +27,7 @@ const ProfilePage = () => {
     });
   }, []);
 
-  if (data?.rsvp) {
+  if (data?.rsvp === "yes") {
     return (
       <div className="flex justify-center items-center flex-col font-lexend bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-400 text-white h-[93vh]">
         <p className="text-4xl font-bold">{data?.first + " " + data?.last}</p>
@@ -40,7 +40,7 @@ const ProfilePage = () => {
     );
   } else {
     return (
-      <p className="font-lexend text-xl text-center">
+      <p className="p-4 font-lexend text-2xl text-center bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-400 text-white h-[93vh]">
         You will need to first RSVP before checking into Rosehack 2023. Please
         navigate to the RSVP page and following the instructions. Once you have
         RSVP, you will be able to checkin. If you have additional questions, do
