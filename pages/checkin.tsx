@@ -30,7 +30,7 @@ const ProfilePage = () => {
   if (data?.rsvp) {
     return (
       <div className="flex justify-center items-center flex-col font-lexend bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-400 text-white h-[93vh]">
-        <p className="text-4xl">{data?.first + " " + data?.last}</p>
+        <p className="text-4xl font-bold">{data?.first + " " + data?.last}</p>
         <p className="text-2xl">{data?.email}</p>
         <p className="text-2xl font-bold">Adult {data?.shirt}</p>
         <div className="w-full flex justify-center items-center">
