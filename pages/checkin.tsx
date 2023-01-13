@@ -34,7 +34,7 @@ const ProfilePage = () => {
         <p className="text-2xl">{data?.email}</p>
         <p className="text-2xl font-bold">Adult {data?.shirt}</p>
         <div className="w-full flex justify-center items-center">
-          <QRCodeSVG value={data?.email + " " + data?.shirt} size={300} />
+          <QRCodeSVG value={data?.email} size={300} />
         </div>
       </div>
     );
