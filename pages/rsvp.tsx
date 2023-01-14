@@ -36,7 +36,8 @@ const RSVP = () => {
       setVisible(true);
       setTimeout(() => {
         setVisible(false);
-      }, 3000);
+        router.push("/dashboard");
+      }, 1000);
     }
   };
 
