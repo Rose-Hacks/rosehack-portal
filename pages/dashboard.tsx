@@ -380,6 +380,7 @@ const Dashboard = () => {
                 type="text"
                 name="id"
                 value={id}
+                maxLength={50}
                 placeholder="New Team ID"
                 className="border-2 border-black w-full p-1 font-lexend"
                 onChange={(e) => setId(e.target.value)}
