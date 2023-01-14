@@ -9,6 +9,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { v4 as uuidv4 } from "uuid";
 import { FaRegCopy, FaCheck, FaTimes, FaRegClock } from "react-icons/fa";
+import Link from "next/link";
 
 interface team_type {
   members: string[];
@@ -219,6 +220,17 @@ const Dashboard = () => {
           : "Good Night"}{" "}
         {userData.first} {userData.last}!
       </p>
+      <div className="w-10/12 text-center text-white font-lexend text-xl">
+        If you have not RSVP already, please ensure that you RSVP immediately!
+        Only the first 250 participants who RSVP will be guaranteed free food
+        and swag! You can rsvp at{" "}
+        <Link
+          href="/rsvp"
+          className="text-white hover:!text-header-left no-underline font-bold"
+        >
+          portal.rosehack.com/rsvp
+        </Link>
+      </div>
 
       <Row className="flex justify-evenly items-stretch w-11/12 mt-4">
         <Col
